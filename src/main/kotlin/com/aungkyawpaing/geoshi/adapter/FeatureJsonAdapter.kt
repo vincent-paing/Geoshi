@@ -2,7 +2,6 @@ package com.aungkyawpaing.geoshi.adapter
 
 import com.aungkyawpaing.geoshi.model.*
 import com.squareup.moshi.*
-import java.lang.IllegalArgumentException
 
 internal class FeatureJsonAdapter(
   private val wildCardJsonAdapter: JsonAdapter<Any>,

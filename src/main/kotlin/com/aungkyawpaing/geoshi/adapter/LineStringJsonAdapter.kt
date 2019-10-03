@@ -4,7 +4,6 @@ import com.aungkyawpaing.geoshi.model.GeometryType
 import com.aungkyawpaing.geoshi.model.LineString
 import com.aungkyawpaing.geoshi.model.Position
 import com.squareup.moshi.*
-import java.lang.IllegalArgumentException
 
 internal class LineStringJsonAdapter constructor(
   private val positionJsonAdapter: JsonAdapter<Position>

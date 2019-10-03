@@ -2,7 +2,6 @@ package com.aungkyawpaing.geoshi.adapter
 
 import com.aungkyawpaing.geoshi.model.*
 import com.squareup.moshi.*
-import java.lang.IllegalArgumentException
 
 class GeometryCollectionJsonAdapter constructor(
   private val pointJsonAdapter: JsonAdapter<Point>,

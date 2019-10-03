@@ -1,7 +1,5 @@
 package com.aungkyawpaing.geoshi.model
 
-import java.lang.IllegalArgumentException
-
 /**
  * GeoJSON supports the following geometry types (case sensitive strings):
  * Point

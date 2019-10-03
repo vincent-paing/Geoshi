@@ -1,8 +1,9 @@
 package com.aungkyawpaing.geoshi.adapter
 
-import com.aungkyawpaing.geoshi.model.*
+import com.aungkyawpaing.geoshi.model.Feature
+import com.aungkyawpaing.geoshi.model.FeatureCollection
+import com.aungkyawpaing.geoshi.model.GeometryType
 import com.squareup.moshi.*
-import java.lang.IllegalArgumentException
 
 internal class FeatureCollectionJsonAdapter constructor(
   private val featureJsonAdapter: JsonAdapter<Feature>

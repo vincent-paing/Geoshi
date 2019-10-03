@@ -1,6 +1,5 @@
 package com.aungkyawpaing.geoshi.adapter
 
-import com.aungkyawpaing.geoshi.model.LineString
 import com.aungkyawpaing.geoshi.model.MultiPoint
 import com.aungkyawpaing.geoshi.model.Position
 import com.squareup.moshi.JsonDataException
