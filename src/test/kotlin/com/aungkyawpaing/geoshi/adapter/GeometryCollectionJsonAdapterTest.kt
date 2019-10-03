@@ -6,7 +6,6 @@ import com.aungkyawpaing.geoshi.model.Point
 import com.aungkyawpaing.geoshi.model.Position
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
-import javafx.geometry.Pos
 import org.junit.Assert
 import org.junit.Test
 
