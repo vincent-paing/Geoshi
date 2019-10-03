@@ -1,0 +1,67 @@
+apply from: 'config.gradle'
+
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
+
+bintray {
+  user = System.getenv('BINTRAY_USER')
+  key = System.getenv('BINTRAY_API_KEY')
+  publications = ['MyPublication']
+  configurations = ['archives']
+  publish = true
+  override = true
+  pkg {
+    repo = 'maven'
+    name = project.artifactName
+    licenses = ['Apache-2.0']
+    vcsUrl = "https://github.com/vincent-paing/Geoshi.git"
+    version {
+      name = project.artifactVersion
+    }
+  }
+}
+
+// Create the pom configuration:
+def pomConfig = {
+  licenses {
+    license {
+      name "The Apache Software License, Version 2.0"
+      url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+    }
+  }
+  developers {
+    developer {
+      id "aungkyawpaing"
+      name "aungkyawpaing"
+      email "dev@aungkyawpaing.com"
+    }
+  }
+
+  scm {
+    url "https://github.com/vincent-paing/Geoshi"
+  }
+}
+
+project.afterEvaluate {
+  publishing {
+    publications {
+      MyPublication(MavenPublication) {
+        from components.java
+        artifact sourcesJar
+        artifact javadocJar
+        groupId project.artifactGroup
+        artifactId "$artifactId"
+        version project.artifactVersion
+        pom.withXml {
+          def root = asNode()
+          root.appendNode('description', 'https://github.com/vincent-paing/Geoshi')
+          root.appendNode('name', 'Geoshi')
+          root.appendNode('url', 'https://github.com/vincent-paing/Geoshi')
+          root.children().last() + pomConfig
+        }
+      }
+    }
+  }
+}
+

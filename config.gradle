@@ -1,0 +1,3 @@
+project.ext.artifactGroup = 'com.aungkyawpaing.geoshi'
+project.ext.artifactVersion = '0.0.1'
+project.ext.artifactName = 'geoshi'
