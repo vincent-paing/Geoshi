@@ -7,7 +7,7 @@ text.
  */
 data class Feature(
   val id: String? = null,
-  val geometry: Geometry,
+  val geometry: Geometry? = null,
   val properties: Map<String, Any>
 ) : Geometry() {
 

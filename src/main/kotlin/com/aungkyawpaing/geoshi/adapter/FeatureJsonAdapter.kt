@@ -46,44 +46,47 @@ internal class FeatureJsonAdapter(
 
         }
         2 -> {
-          val jsonValueMap = reader.readJsonValue() as Map<String, String>
-          val geometryTypeString = jsonValueMap[FeatureJsonAdapter.KEY_TYPE]
-          if (geometryTypeString != null) {
-            val geometryType = GeometryType.convertFromString(geometryTypeString)
-            when (geometryType) {
-              GeometryType.POINT -> {
-                val point = pointJsonAdapter.fromJsonValue(jsonValueMap)
-                if (point != null) geometry = point
-              }
-              GeometryType.LINESTRING -> {
-                val lineString = lineStringJsonAdapter.fromJsonValue(jsonValueMap)
-                if (lineString != null) geometry = lineString
-              }
-              GeometryType.POLYGON -> {
-                val polygon = polygonJsonAdapter.fromJsonValue(jsonValueMap)
-                if (polygon != null) geometry = polygon
-              }
-              GeometryType.MULIT_POINT -> {
-                val multiPoint = multiPointJsonAdapter.fromJsonValue(jsonValueMap)
-                if (multiPoint != null) geometry = multiPoint
-              }
-              GeometryType.MULTI_LINE_STRING -> {
-                val multiLineString = multiLineStringJsonAdapter.fromJsonValue(jsonValueMap)
-                if (multiLineString != null) geometry = multiLineString
-              }
-              GeometryType.MULTI_POLYGON -> {
-                val multiPolygon = multiPolygonJsonAdapter.fromJsonValue(jsonValueMap)
-                if (multiPolygon != null) geometry = multiPolygon
-              }
-              GeometryType.GEOMETRY_COLLECTION -> {
-                val geometryCollection = geometryCollectionJsonAdapter.fromJsonValue(jsonValueMap)
-                if (geometryCollection != null) geometry = geometryCollection
-              }
-              GeometryType.FEATURE -> {
-                // Do Nothing, consider to throw an exception?
-              }
-              GeometryType.FEATURE_COLLECTION -> {
-                // Do Nothing, consider to throw an exception?
+          val jsonValue = reader.readJsonValue()
+          if (jsonValue != null) {
+            val jsonValueMap = jsonValue as Map<String, String>
+            val geometryTypeString = jsonValueMap[FeatureJsonAdapter.KEY_TYPE]
+            if (geometryTypeString != null) {
+              val geometryType = GeometryType.convertFromString(geometryTypeString)
+              when (geometryType) {
+                GeometryType.POINT -> {
+                  val point = pointJsonAdapter.fromJsonValue(jsonValueMap)
+                  if (point != null) geometry = point
+                }
+                GeometryType.LINESTRING -> {
+                  val lineString = lineStringJsonAdapter.fromJsonValue(jsonValueMap)
+                  if (lineString != null) geometry = lineString
+                }
+                GeometryType.POLYGON -> {
+                  val polygon = polygonJsonAdapter.fromJsonValue(jsonValueMap)
+                  if (polygon != null) geometry = polygon
+                }
+                GeometryType.MULIT_POINT -> {
+                  val multiPoint = multiPointJsonAdapter.fromJsonValue(jsonValueMap)
+                  if (multiPoint != null) geometry = multiPoint
+                }
+                GeometryType.MULTI_LINE_STRING -> {
+                  val multiLineString = multiLineStringJsonAdapter.fromJsonValue(jsonValueMap)
+                  if (multiLineString != null) geometry = multiLineString
+                }
+                GeometryType.MULTI_POLYGON -> {
+                  val multiPolygon = multiPolygonJsonAdapter.fromJsonValue(jsonValueMap)
+                  if (multiPolygon != null) geometry = multiPolygon
+                }
+                GeometryType.GEOMETRY_COLLECTION -> {
+                  val geometryCollection = geometryCollectionJsonAdapter.fromJsonValue(jsonValueMap)
+                  if (geometryCollection != null) geometry = geometryCollection
+                }
+                GeometryType.FEATURE -> {
+                  // Do Nothing, consider to throw an exception?
+                }
+                GeometryType.FEATURE_COLLECTION -> {
+                  // Do Nothing, consider to throw an exception?
+                }
               }
             }
           }
@@ -110,7 +113,7 @@ internal class FeatureJsonAdapter(
 
     return Feature(
       id = id,
-      geometry = geometry!!,
+      geometry = geometry,
       properties = properties
     )
   }
@@ -127,17 +130,23 @@ internal class FeatureJsonAdapter(
       writer.name(FeatureJsonAdapter.KEY_GEOMETRY) // "geometry":
       val geometry = value.geometry
 
-      val type = geometry.getType()
+      if (geometry != null) {
 
-      when (geometry) {
-        is Point -> pointJsonAdapter.toJson(writer, geometry)
-        is LineString -> lineStringJsonAdapter.toJson(writer, geometry)
-        is Polygon -> polygonJsonAdapter.toJson(writer, geometry)
-        is MultiPoint -> multiPointJsonAdapter.toJson(writer, geometry)
-        is MultiLineString -> multiLineStringJsonAdapter.toJson(writer, geometry)
-        is MultiPolygon -> multiPolygonJsonAdapter.toJson(writer, geometry)
-        is GeometryCollection -> geometryCollectionJsonAdapter.toJson(writer, geometry)
-        else -> throw JsonDataException("GeometryCollection cannot serialize geometry of type :$type")
+        val type = geometry?.getType()
+
+        when (geometry) {
+          is Point -> pointJsonAdapter.toJson(writer, geometry)
+          is LineString -> lineStringJsonAdapter.toJson(writer, geometry)
+          is Polygon -> polygonJsonAdapter.toJson(writer, geometry)
+          is MultiPoint -> multiPointJsonAdapter.toJson(writer, geometry)
+          is MultiLineString -> multiLineStringJsonAdapter.toJson(writer, geometry)
+          is MultiPolygon -> multiPolygonJsonAdapter.toJson(writer, geometry)
+          is GeometryCollection -> geometryCollectionJsonAdapter.toJson(writer, geometry)
+          else -> throw JsonDataException("GeometryCollection cannot serialize geometry of type :$type")
+        }
+      } else {
+        writer.serializeNulls = true
+        writer.nullValue()
       }
 
       writer.name(FeatureJsonAdapter.KEY_PROPERTIES) // "properties":
