@@ -35,6 +35,28 @@ class FeatureJsonAdapterTest {
   }
 
   @Test
+  fun convertFeatureFromJsonStringWithNullGeometry() {
+    //Given
+    val jsonString =
+      "{\"type\":\"Feature\",\"geometry\":null,\"properties\":{\"name\":\"Dinagat Islands\"}}"
+
+    val expected = Feature(
+      id = null,
+      geometry = null,
+      properties = mapOf(
+        "name" to "Dinagat Islands"
+      )
+    )
+
+    //When
+    val actual = moshi.adapter(Feature::class.java).fromJson(jsonString)
+
+    //Then
+    Assert.assertEquals(expected, actual)
+  }
+
+
+  @Test
   fun convertPointFeatureWithIdFromJsonString() {
     //Given
     val jsonString =
@@ -155,6 +177,27 @@ class FeatureJsonAdapterTest {
 
     val expected =
       "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[102.0,0.5]},\"properties\":{\"prop0\":\"value0\"}}"
+
+    //When
+    val actual = moshi.adapter(Feature::class.java).toJson(feature)
+
+    //Then
+    Assert.assertEquals(expected, actual)
+  }
+
+  @Test
+  fun convertFeatureWithNullGeometryToJsonString() {
+    //Given
+    val feature = Feature(
+      id = null,
+      geometry = null,
+      properties = mapOf(
+        "prop0" to "value0"
+      )
+    )
+
+    val expected =
+      "{\"type\":\"Feature\",\"geometry\":null,\"properties\":{\"prop0\":\"value0\"}}"
 
     //When
     val actual = moshi.adapter(Feature::class.java).toJson(feature)
