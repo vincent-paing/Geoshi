@@ -109,4 +109,37 @@ class PolygonJsonAdapterTest {
     Assert.assertEquals(expected, actual)
   }
 
+  @Test(expected = JsonDataException::class)
+  fun testInvalidPolygonCoordinatesValidation() {
+    //Given
+    val jsonString =
+      "{\"type\":\"Polygon\",\"coordinates\":[[[190.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],[[100.8,0.8],[100.8,0.2],[100.2,0.2],[100.2,0.8],[190.0,0.0]]]}"
+
+    //When
+    val actual = moshi.adapter(Polygon::class.java).fromJson(jsonString)
+
+  }
+
+  @Test(expected = JsonDataException::class)
+  fun testInvalidPolygonValidationWithLineRingFirstAndLast() {
+    //Given
+    val jsonString =
+      "{\"type\":\"Polygon\",\"coordinates\":[[[110.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],[[100.8,0.8],[100.8,0.2],[100.2,0.2],[100.2,0.8],[100.8,0.8]]]}"
+
+    //When
+    val actual = moshi.adapter(Polygon::class.java).fromJson(jsonString)
+
+  }
+
+  @Test(expected = JsonDataException::class)
+  fun testInvalidPolygonValidationWithLineRingSizeFourOrMore() {
+    //Given
+    val jsonString =
+      "{\"type\":\"Polygon\",\"coordinates\":[[[100.2,0.2],[100.2,0.8],[100.2,0.2]]]}"
+
+    //When
+    val actual = moshi.adapter(Polygon::class.java).fromJson(jsonString)
+
+  }
+
 }

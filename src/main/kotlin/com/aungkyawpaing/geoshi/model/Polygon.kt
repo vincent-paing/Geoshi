@@ -1,9 +1,13 @@
 package com.aungkyawpaing.geoshi.model
 
-data class Polygon(
-  val coordinates: List<List<Position>>
-) : Geometry() {
+import com.aungkyawpaing.geoshi.validation.GeoShiValidation
+import com.aungkyawpaing.geoshi.validation.Validation
 
-  override fun getType(): GeometryType = GeometryType.POLYGON
+data class Polygon(
+    val coordinates: List<List<Position>>
+) : Geometry() {
+    override fun validate(): Validation = GeoShiValidation.isPolygon(coordinates = coordinates)
+
+    override fun getType(): GeometryType = GeometryType.POLYGON
 
 }

@@ -6,7 +6,6 @@ import com.aungkyawpaing.geoshi.model.Point
 import com.aungkyawpaing.geoshi.model.Position
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
-import javafx.geometry.Pos
 import org.junit.Assert
 import org.junit.Test
 
@@ -105,5 +104,16 @@ class GeometryCollectionJsonAdapterTest {
 
     //Then
     Assert.assertEquals(expected, actual)
+  }
+
+  @Test(expected = JsonDataException::class)
+  fun testInvalidGeometryCollectionCoordinatesValidation() {
+    //Given
+    val jsonString =
+      "{\"type\":\"GeometryCollection\",\"geometries\":[{\"type\":\"Point\",\"coordinates\":[190.0,0.0]},{\"type\":\"LineString\",\"coordinates\":[[101.0,1.0],[102.0,99.0]]}]}"
+
+    //When
+    val actual = moshi.adapter(GeometryCollection::class.java).fromJson(jsonString)
+
   }
 }

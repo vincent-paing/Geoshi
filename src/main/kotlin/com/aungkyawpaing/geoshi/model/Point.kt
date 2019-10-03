@@ -1,9 +1,13 @@
 package com.aungkyawpaing.geoshi.model
 
-data class Point(
-  val coordinates: Position
-) : Geometry() {
+import com.aungkyawpaing.geoshi.validation.GeoShiValidation
+import com.aungkyawpaing.geoshi.validation.Validation
 
-  override fun getType(): GeometryType = GeometryType.POINT
+data class Point(
+    val coordinates: Position
+) : Geometry() {
+    override fun validate(): Validation = GeoShiValidation.isPoint(coordinate = coordinates)
+
+    override fun getType(): GeometryType = GeometryType.POINT
 
 }

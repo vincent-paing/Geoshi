@@ -98,5 +98,15 @@ class MultiPointJsonAdapterTest {
     Assert.assertEquals(expected, actual)
   }
 
+  @Test(expected = JsonDataException::class)
+  fun testInvalidMultiPointCoordinatesValidation() {
+    //Given
+    val jsonString = "{\"type\":\"MultiPoint\",\"coordinates\":[[100.0,0.0],[190.0,99.0]]}"
+
+    //When
+    val actual = moshi.adapter(MultiPoint::class.java).fromJson(jsonString)
+
+  }
+
 
 }

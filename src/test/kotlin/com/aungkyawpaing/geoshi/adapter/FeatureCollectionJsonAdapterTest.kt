@@ -150,4 +150,15 @@ class FeatureCollectionJsonAdapterTest {
     //Then
     Assert.assertEquals(expected, actual)
   }
+
+  @Test(expected = JsonDataException::class)
+  fun testInvalidFeatureCollectionCoordinatesValidation() {
+    //Given
+    val jsonString =
+      "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[182.0,95.5]},\"properties\":{\"prop0\":\"value0\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[102.0,0.0],[103.0,1.0],[104.0,0.0],[105.0,1.0]]},\"properties\":{\"prop0\":\"value0\",\"prop1\":0.0}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]},\"properties\":{\"prop0\":\"value0\",\"prop1\":{\"this\":\"that\"}}}]}"
+
+    //When
+    val actual = moshi.adapter(FeatureCollection::class.java).fromJson(jsonString)
+
+  }
 }

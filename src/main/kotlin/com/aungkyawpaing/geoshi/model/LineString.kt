@@ -1,9 +1,13 @@
 package com.aungkyawpaing.geoshi.model
 
-data class LineString(
-  val coordinates: List<Position>
-) : Geometry() {
+import com.aungkyawpaing.geoshi.validation.GeoShiValidation
+import com.aungkyawpaing.geoshi.validation.Validation
 
-  override fun getType(): GeometryType = GeometryType.LINESTRING
+data class LineString(
+    val coordinates: List<Position>
+) : Geometry() {
+    override fun validate(): Validation = GeoShiValidation.isLineString(coordinates = coordinates)
+
+    override fun getType(): GeometryType = GeometryType.LINESTRING
 
 }

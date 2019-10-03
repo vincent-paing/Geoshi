@@ -1,9 +1,13 @@
 package com.aungkyawpaing.geoshi.model
 
-data class MultiPolygon(
-  val coordinates: List<List<List<Position>>>
-) : Geometry() {
+import com.aungkyawpaing.geoshi.validation.GeoShiValidation
+import com.aungkyawpaing.geoshi.validation.Validation
 
-  override fun getType(): GeometryType = GeometryType.MULTI_POLYGON
+data class MultiPolygon(
+    val coordinates: List<List<List<Position>>>
+) : Geometry() {
+    override fun validate(): Validation = GeoShiValidation.isMultiPolygon(coordinates = coordinates)
+
+    override fun getType(): GeometryType = GeometryType.MULTI_POLYGON
 
 }

@@ -162,4 +162,15 @@ class FeatureJsonAdapterTest {
     //Then
     Assert.assertEquals(expected, actual)
   }
+
+  @Test(expected = JsonDataException::class)
+  fun testInvalidFeatureCoordinatesValidation() {
+    //Given
+    val jsonString =
+      "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[192.0,98.5]},\"properties\":{\"prop0\":\"value0\"}}"
+
+    //When
+    val actual = moshi.adapter(Feature::class.java).fromJson(jsonString)
+
+  }
 }

@@ -84,4 +84,14 @@ class PointJsonAdapterTest {
     Assert.assertEquals(expected, actual)
 
   }
+
+  @Test(expected = JsonDataException::class)
+  fun testInvalidPointCoordinateValidation() {
+
+    //Given
+    val given = "{\"type\":\"Point\",\"coordinates\":[190.0,100]}"
+
+    //When
+    val actual = moshi.adapter(Point::class.java).fromJson(given)
+  }
 }
