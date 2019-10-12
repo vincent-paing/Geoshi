@@ -1,6 +1,8 @@
 package com.aungkyawpaing.geoshi.adapter
 
 import com.aungkyawpaing.geoshi.model.Position
+import com.aungkyawpaing.geoshi.validation.Validation
+import com.aungkyawpaing.geoshi.validation.isPosition
 import com.squareup.moshi.*
 
 internal class PositionJsonAdapter : JsonAdapter<Position>() {
@@ -31,7 +33,10 @@ internal class PositionJsonAdapter : JsonAdapter<Position>() {
       altitude = altitude
     )
 
-    return position
+    return when(val validation = position.isPosition()){
+      is Validation.Valid -> position
+      else -> throw JsonDataException(validation.error)
+    }
   }
 
   @ToJson

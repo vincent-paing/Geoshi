@@ -105,5 +105,18 @@ class MultiLineStringJsonAdapterTest {
     Assert.assertEquals(expected, actual)
   }
 
+  @Test(expected = JsonDataException::class)
+  fun testInvalidJsonWithOutOfRangeCoordinates() {
+    //Given
+    val jsonString =
+      "{\"type\":\"MultiLineString\",\"coordinates\":[[[190.0,99.0],[101.0,1.0]],[[102.0,2.0],[103.0,3.0]]]}"
+
+
+    //When
+    val actual = moshi.adapter(MultiLineString::class.java).fromJson(jsonString)
+
+  }
+
+
 
 }

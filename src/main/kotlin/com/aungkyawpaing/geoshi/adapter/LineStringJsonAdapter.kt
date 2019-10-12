@@ -3,6 +3,8 @@ package com.aungkyawpaing.geoshi.adapter
 import com.aungkyawpaing.geoshi.model.GeometryType
 import com.aungkyawpaing.geoshi.model.LineString
 import com.aungkyawpaing.geoshi.model.Position
+import com.aungkyawpaing.geoshi.validation.Validation
+import com.aungkyawpaing.geoshi.validation.isLineString
 import com.squareup.moshi.*
 
 internal class LineStringJsonAdapter constructor(
@@ -62,7 +64,12 @@ internal class LineStringJsonAdapter constructor(
       throw  JsonDataException("'cooridnates' must bean array of two or more positions ${reader.path}")
     }
 
-    return LineString(coordinates = positions)
+    val lineString =  LineString(coordinates = positions)
+
+    return when(val validation = lineString.isLineString()){
+        is Validation.Valid -> lineString
+        else -> throw JsonDataException(validation.error)
+    }
   }
 
   @ToJson
