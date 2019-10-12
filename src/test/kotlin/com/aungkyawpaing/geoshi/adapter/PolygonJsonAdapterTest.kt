@@ -109,4 +109,15 @@ class PolygonJsonAdapterTest {
     Assert.assertEquals(expected, actual)
   }
 
+  @Test(expected = JsonDataException::class)
+  fun testInvalidJsonValidationWithCoordinatesSizeThree() {
+    //Given
+    val jsonString =
+      "{\"type\":\"Polygon\",\"coordinates\":[[[100.2,0.2],[100.2,0.8],[100.2,0.2]]]}"
+
+    //When
+    val actual = moshi.adapter(Polygon::class.java).fromJson(jsonString)
+
+  }
+
 }

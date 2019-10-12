@@ -3,6 +3,8 @@ package com.aungkyawpaing.geoshi.adapter
 import com.aungkyawpaing.geoshi.model.GeometryType
 import com.aungkyawpaing.geoshi.model.MultiPoint
 import com.aungkyawpaing.geoshi.model.Position
+import com.aungkyawpaing.geoshi.validation.Validation
+import com.aungkyawpaing.geoshi.validation.isMultiPoint
 import com.squareup.moshi.*
 
 internal class MultiPointJsonAdapter constructor(
@@ -62,7 +64,11 @@ internal class MultiPointJsonAdapter constructor(
       throw  JsonDataException("'cooridnates' must bean array of one ore more positions ${reader.path}")
     }
 
-    return MultiPoint(coordinates = positions)
+    val multiPoint = MultiPoint(coordinates = positions)
+    return when(val validation = multiPoint.isMultiPoint()){
+      is Validation.Valid -> multiPoint
+      else -> throw JsonDataException(validation.error)
+    }
   }
 
   @ToJson

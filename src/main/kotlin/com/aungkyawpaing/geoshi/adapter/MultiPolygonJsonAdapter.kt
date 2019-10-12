@@ -3,6 +3,8 @@ package com.aungkyawpaing.geoshi.adapter
 import com.aungkyawpaing.geoshi.model.GeometryType
 import com.aungkyawpaing.geoshi.model.MultiPolygon
 import com.aungkyawpaing.geoshi.model.Position
+import com.aungkyawpaing.geoshi.validation.Validation
+import com.aungkyawpaing.geoshi.validation.isMultiPolygon
 import com.squareup.moshi.*
 
 internal class MultiPolygonJsonAdapter constructor(
@@ -78,7 +80,11 @@ internal class MultiPolygonJsonAdapter constructor(
       throw JsonDataException("'cooridnates' must bean array of two or more line strings at ${reader.path}")
     }
 
-    return MultiPolygon(coordinates = polygonPositionList)
+    val multiPolygon =  MultiPolygon(coordinates = polygonPositionList)
+    return when(val validation = multiPolygon.isMultiPolygon()){
+      is Validation.Valid -> multiPolygon
+      else -> throw JsonDataException(validation.error)
+    }
   }
 
   @ToJson

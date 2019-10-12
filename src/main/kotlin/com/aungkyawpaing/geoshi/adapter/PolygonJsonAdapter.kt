@@ -3,6 +3,8 @@ package com.aungkyawpaing.geoshi.adapter
 import com.aungkyawpaing.geoshi.model.GeometryType
 import com.aungkyawpaing.geoshi.model.Polygon
 import com.aungkyawpaing.geoshi.model.Position
+import com.aungkyawpaing.geoshi.validation.Validation
+import com.aungkyawpaing.geoshi.validation.isPolygon
 import com.squareup.moshi.*
 
 internal class PolygonJsonAdapter constructor(
@@ -70,7 +72,11 @@ internal class PolygonJsonAdapter constructor(
       throw JsonDataException("'coordinates' must bean array of two or more line strings at ${reader.path}")
     }
 
-    return Polygon(lineStringPositionList)
+    val polygon =  Polygon(lineStringPositionList)
+    return when(val validation = polygon.isPolygon()){
+      is Validation.Valid -> polygon
+      else -> throw JsonDataException(validation.error)
+    }
   }
 
   @ToJson

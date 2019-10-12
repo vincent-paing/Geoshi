@@ -3,6 +3,8 @@ package com.aungkyawpaing.geoshi.adapter
 import com.aungkyawpaing.geoshi.model.GeometryType
 import com.aungkyawpaing.geoshi.model.Point
 import com.aungkyawpaing.geoshi.model.Position
+import com.aungkyawpaing.geoshi.validation.Validation
+import com.aungkyawpaing.geoshi.validation.isPoint
 import com.squareup.moshi.*
 
 internal class PointJsonAdapter constructor(
@@ -53,7 +55,10 @@ internal class PointJsonAdapter constructor(
 
     val point = Point(position)
 
-    return point
+    return when(val validation = point.isPoint()){
+      is Validation.Valid -> point
+      else -> throw JsonDataException(validation.error)
+    }
   }
 
   @ToJson
