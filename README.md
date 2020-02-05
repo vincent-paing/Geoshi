@@ -53,7 +53,7 @@ repositories {
     jcenter()
 }
 
-compile 'com.aungkyawpaing.geoshi:geoshi-converter:0.0.2'
+compile 'com.aungkyawpaing.geoshi:geoshi-adapter:0.0.2'
 ```
 
 ## License
